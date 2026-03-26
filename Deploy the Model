@@ -1,0 +1,13 @@
+from sagemaker.model import Model
+
+# Assuming model_data_s3_path, sagemaker_session, and role are defined from the previous training step
+linear_model = Model(
+    image_uri=sagemaker.image_uris.retrieve(
+        framework='linear-learner',
+        region=sagemaker_session.boto_region_name,
+        version='latest'
+    ),
+    model_data=model_data_s3_path,  # Use the S3 path to the trained model
+    role=role,
+    sagemaker_session=sagemaker_session  # Important to add this line
+)
