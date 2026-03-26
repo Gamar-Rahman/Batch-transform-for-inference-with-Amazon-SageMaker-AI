@@ -1,0 +1,39 @@
+import sagemaker
+from sagemaker.estimator import Estimator
+from sagemaker.inputs import TrainingInput
+import boto3
+
+sagemaker_session = sagemaker.Session()
+role = sagemaker.get_execution_role()
+bucket = sagemaker_session.default_bucket()
+prefix = 'batch-transform-demo'
+
+# Create a simple CSV file
+with open('simple_train.csv', 'w') as f:
+    f.write('0.1,0.2,0.3\n0.4,0.5,0.6\n')
+
+# Upload the simple CSV to S3
+train_s3_path = sagemaker_session.upload_data('simple_train.csv', bucket, f"{prefix}/simple_train")
+
+linear_estimator = Estimator(
+    image_uri=sagemaker.image_uris.retrieve(
+        framework='linear-learner',
+        region=sagemaker_session.boto_region_name,
+        version='latest'
+    ),
+    role=role,
+    instance_count=1,
+    instance_type='ml.m5.large',
+    output_path=f's3://{bucket}/{prefix}/output',
+    sagemaker_session=sagemaker_session,
+    hyperparameters={
+        'predictor_type': 'regressor',
+        'mini_batch_size': '1'
+    }
+)
+
+train_input = TrainingInput(s3_data=train_s3_path, content_type='text/csv')
+linear_estimator.fit({'train': train_input})
+
+model_data_s3_path = linear_estimator.model_data
+print(f"Trained model saved at: {model_data_s3_path}")
