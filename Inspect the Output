@@ -1,0 +1,9 @@
+output_prefix = f"{prefix}/output-transform"
+output_key = f"{output_prefix}/synthetic_data.csv.out"  # The output file name
+
+s3_client = boto3.client('s3')
+output_object = s3_client.get_object(Bucket=bucket, Key=output_key)
+output_content = output_object['Body'].read().decode('utf-8')
+
+print("Batch Transform Output:")
+print(output_content)
