@@ -1,0 +1,10 @@
+transformer.transform(
+    data=f's3://{bucket}/{prefix}/input',  # S3 path to your input data
+    content_type='text/csv',
+    split_type='Line'
+)
+
+transformer.wait()
+
+output_s3_path = transformer.output_path
+print(f"Batch transform output saved at: {output_s3_path}")
