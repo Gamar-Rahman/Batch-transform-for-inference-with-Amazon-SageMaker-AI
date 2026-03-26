@@ -1,0 +1,12 @@
+import logging
+logging.getLogger("sagemaker").setLevel(logging.ERROR)
+
+import boto3
+import sagemaker
+from sagemaker import get_execution_role
+
+session = sagemaker.Session()
+role = get_execution_role()
+
+print("AWS Region:", session.boto_region_name)
+print("SageMaker Execution Role:", role)
