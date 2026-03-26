@@ -1,0 +1,8 @@
+import sagemaker
+
+sagemaker_session = sagemaker.Session()
+bucket = sagemaker_session.default_bucket()  # Use default bucket or specify your bucket
+prefix = 'batch-transform-demo'  # S3 prefix for the data
+
+input_s3_path = sagemaker_session.upload_data(input_data_path, bucket=bucket, key_prefix=f"{prefix}/input")
+print(f"Input data uploaded to: {input_s3_path}")
