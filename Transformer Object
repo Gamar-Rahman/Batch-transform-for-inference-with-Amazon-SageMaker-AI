@@ -1,0 +1,5 @@
+transformer = linear_model.transformer(
+    instance_count=1,
+    instance_type='ml.m5.large',
+    output_path=f's3://{bucket}/{prefix}/output-transform',
+)
