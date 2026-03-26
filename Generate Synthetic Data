@@ -1,0 +1,15 @@
+import pandas as pd
+import numpy as np
+
+# Generate synthetic data
+num_samples = 10
+data = {
+    'feature1': np.random.rand(num_samples),
+    'feature2': np.random.rand(num_samples)
+}
+
+df = pd.DataFrame(data)
+
+# Save to a CSV file
+input_data_path = 'synthetic_data.csv'
+df.to_csv(input_data_path, index=False, header=False)  # No header needed for linear learner
